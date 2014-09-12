@@ -13,7 +13,7 @@ Available via `docker pull grengojbo/django:latest`. Example project files.
 * Django (1.5.9)
     * Pillow (2.5.3) png, jpeg support
     * [List of all packages](https://github.com/grengojbo/docker-django/blob/master/tarmaker/freeze.txt)
-* ImageMagik
+* Bash (4.3)
 * System
     * Wide character support
 * Internet/networking
