@@ -1,50 +1,28 @@
 ## Django Images
 
-This repository creates multiple flavors of busybox images with full-chains
-from scratch using [Buildroot](http://buildroot.uclibc.org). It is part of the
-[Radial](https://github.com/radial) suite of images and tools and was compiled
-to make use of the small size of Busybox with some additional specialty items.
+This repository creates [Django of busybox images](https://github.com/grengojbo/docker-django) with full-chains from scratch using [Buildroot](http://buildroot.uclibc.org). 
 
-My goal was to make lightweight busybox-based volume-containers solely
-for managing the configuration "Hub" containers and shared/bind-mounted volume
-"Axle" containers for the container that actually runs the application, or
-"Spoke" container. 
+This image size **281 mb**.
 
-The Busyboxplus flavors are:
+Available via `docker pull grengojbo/django:latest`. Example project files.
 
-###Base Image
-
-Available via `docker pull radial/busyboxplus:base`. 
-
+* Python (2.7.6)
+    * Wide MySQL support
+    * easy_install (setuptools 5.7)
+    * pip (1.5.6)
+* Django (1.5.9)
+    * Pillow (2.5.3) png, jpeg support
+    * [List of all packages](https://github.com/grengojbo/docker-django/blob/master/tarmaker/freeze.txt)
+* ImageMagik
 * System
     * Wide character support
 * Internet/networking
     * IPV4, IPV6
-
-This image is the basis for the
-[axle-base](https://index.docker.io/u/radial/axle-base/) image. At 1.27mb, it is
-the smallest busybox build of all the flavors.
-
-###cURL Image
-
-Available via `docker pull radial/busyboxplus:curl`. In addition to the base
-image, the cURL image adds:
-
 * Curl (7.35.0)/libcurl (7.35.0), built with OpenSSL (1.0.1f, includes
   ca-certificates), zlib (1.2.8), and Libssh2 (1.4.3)
     * Protocols: dict file ftp ftps gopher http https imap imaps pop3 pop3s rtsp
       scp sftp smtp smtps telnet tftp 
     * Features: IPv6 Largefile NTLM SSL libz TLS-SRP
-
-This image was created as an alternate for those only needing to use cURL to
-extract their configuration in their [Hub containers][hub_cont]. This image, at
-4.23mb, is a significant size savings over the following git image.
-
-###Git Image
-
-Available via `docker pull radial/busyboxplus:git`. In addition to the base and
-cURL image (git requires cURL anyway for http/s support), the git image adds:
-
 * Git (1.8.3.5)
     * built with OpenSSL (1.0.1f, includes ca-certificates) and zlib (1.2.8) 
     * Protocols: local, git, http, https, (no SSH)
@@ -61,14 +39,14 @@ cURL image (git requires cURL anyway for http/s support), the git image adds:
       custom git builds.
 
 The git image is default [Hub container][hub_cont] image and weighs in at around
-12.86mb. Hub containers have the ability to access other
+281 mb. Hub containers have the ability to access other
 containers/servers/web-locations to grab and update configuration using git
 and/or cURL. The possibilities are pretty extensive!
 
-[hub_cont]: https://index.docker.io/u/radial/hub-base/
+[hub_cont]: https://registry.hub.docker.com/u/grengojbo/django/
 
 ### Source
 
 The tarbuilders used to create these images can be found [here][repo]
 
-[repo]: https://github.com/radial/core-busyboxplus
+[repo]: https://github.com/grengojbo/docker-django
