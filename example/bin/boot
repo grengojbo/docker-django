@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# This script is designed to be run inside the container
+#
+
+# fail hard and fast even on pipelines
+set -eo pipefail
+
+export NAME_APP=${NAME_APP:adminsssua}
+
+function on_exit() {
+  GUNICORN_PID=$(cat /tmp/gunicorn.pid)
+  kill -TERM $GUNICORN_PID
+  wait $GUNICORN_PID 2>/dev/null
+  #CELERY_PID=$(cat /tmp/celery.pid)
+  #kill -TERM $CELERY_PID $GUNICORN_PID
+  #wait $CELERY_PID $GUNICORN_PID 2>/dev/null
+  exit 0
+}
+trap on_exit INT TERM
+
+#if [[ ! -z $NAME_APP ]]; then
+#  NAME_APP="noname"
+#fi
+
+if [[ ! -d /storage/${NAME_APP}/publlic/media ]]; then
+  mkdir -p /storage/${NAME_APP}/publlic/media
+  echo Create /storage/${NAME_APP}/publlic/media
+fi
+
+if [[ -d /app/public/media ]]; then
+ rm -Rf /app/public/media
+fi
+
+if [[ ! -d /app/public/media ]]; then
+ ln -s /storage/${NAME_APP}/publlic/media /app/public/media
+ echo Link /app/public/media
+fi
+
+if [[ -d /app/media ]]; then
+ cp -Rf /app/media/* /app/public/media/
+ echo Copy Media files...
+fi
+
+echo ${NAME_APP} App running...
+
+#wait
+exec $@
