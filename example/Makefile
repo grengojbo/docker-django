@@ -1,7 +1,7 @@
-NAME="asssua"
+NAME="appname"
 PUBLIC_PORT=8001
-IMAGE_NAME = "grengojbo/asssua"
-SITE="sssua.org"
+IMAGE_NAME = "grengojbo/${NAME}"
+SITE="example.com"
 
 .PHONY: all run clean push create shell build destroy make_trans syncdb compile_trans static
 
@@ -16,7 +16,8 @@ clean:
 
 create:
 	deis create ${NAME}
-	deis domains:add admin.sssua.org
+	deis domains:add ${SITE}
+	deis domains:add www.${SITE}
 	deis limits:set -m cmd=128M
 
 run:
@@ -28,15 +29,13 @@ shell:
 build:
 	@sudo docker build -t ${IMAGE_NAME} .
 	@echo Run conteiners >  make shell
-	@sudo docker images | grep grengojbo/asssua | awk '{print $7}'
+	@sudo docker images | grep ${IMAGE_NAME} | awk '{print $7}'
 	@echo ---------------------------------
-	@echo image: ${IMAGE_NAME} size:  MB
 
 make_trans:
 	./manage.py makemessages -a -e 'py,html,haml'
 
 install:
-	# docker push grengojbo/sil 10.0.7.235:5000/sil
 	fleetctl submit ${NAME}.service
 	fleetctl submit ${NAME}-log.service
 

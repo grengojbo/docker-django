@@ -4,7 +4,7 @@ This repository creates [Django of busybox images](https://github.com/grengojbo/
 
 This image size **281 mb**.
 
-Available via `docker pull grengojbo/django:latest`. Example project files.
+Available via `docker pull grengojbo/django:latest`. [Example](https://github.com/grengojbo/docker-django/tree/master/example) project files.
 
 * Python (2.7.6)
     * Wide MySQL support

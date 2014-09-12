@@ -6,7 +6,7 @@
 # fail hard and fast even on pipelines
 set -eo pipefail
 
-export NAME_APP=${NAME_APP:adminsssua}
+export NAME_APP=${NAME_APP:noname}
 
 function on_exit() {
   GUNICORN_PID=$(cat /tmp/gunicorn.pid)
@@ -19,30 +19,25 @@ function on_exit() {
 }
 trap on_exit INT TERM
 
-#if [[ ! -z $NAME_APP ]]; then
-#  NAME_APP="noname"
-#fi
-
 if [[ ! -d /storage/${NAME_APP}/publlic/media ]]; then
   mkdir -p /storage/${NAME_APP}/publlic/media
   echo Create /storage/${NAME_APP}/publlic/media
 fi
 
-if [[ -d /app/public/media ]]; then
- rm -Rf /app/public/media
-fi
+# if [[ -d /app/public/media ]]; then
+#  rm -Rf /app/public/media
+# fi
 
-if [[ ! -d /app/public/media ]]; then
- ln -s /storage/${NAME_APP}/publlic/media /app/public/media
- echo Link /app/public/media
-fi
+# if [[ ! -d /app/public/media ]]; then
+#  ln -s /storage/${NAME_APP}/publlic/media /app/public/media
+#  echo Link /app/public/media
+# fi
 
-if [[ -d /app/media ]]; then
- cp -Rf /app/media/* /app/public/media/
- echo Copy Media files...
-fi
+# if [[ -d /app/media ]]; then
+#  cp -Rf /app/media/* /app/public/media/
+#  echo Copy Media files...
+# fi
 
 echo ${NAME_APP} App running...
 
-#wait
 exec $@
